@@ -125,7 +125,7 @@ class format_urchin_data(Use):
         cgm_history = json.loads(open(args.glucose_history).read())
         cgm_records = [
             {
-                'date': dateutil.parser.parse(r['display_time']),
+                'date': dateutil.parser.parse(r['display_time']).replace(tzinfo=None),
                 'sgv': r['glucose'],
                 'trend': DEXCOM_TRENDS.index(r.get('trend_arrow')),
             }
