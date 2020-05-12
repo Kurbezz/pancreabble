@@ -6,6 +6,8 @@ from datetime import timedelta
 from operator import itemgetter
 from uuid import UUID
 
+import dateutil.parser
+
 from libpebble2.services.appmessage import AppMessageService
 from libpebble2.services.appmessage import ByteArray
 from libpebble2.services.appmessage import CString
@@ -123,7 +125,7 @@ class format_urchin_data(Use):
         cgm_history = json.loads(open(args.glucose_history).read())
         cgm_records = [
             {
-                'date': datetime.strptime(r['display_time'], '%Y-%m-%dT%H:%M:%S%z'),
+                'date': dateutil.parser.parse(r['display_time']),
                 'sgv': r['glucose'],
                 'trend': DEXCOM_TRENDS.index(r.get('trend_arrow')),
             }
@@ -135,7 +137,7 @@ class format_urchin_data(Use):
         delta = NO_DELTA_VALUE if graph[1] == 0 else (graph[0] - graph[1])
 
         if args.cgm_clock:
-            cgm_clock = datetime.strptime(json.loads(open(args.cgm_clock).read()), '%Y-%m-%dT%H:%M:%S%z')
+            cgm_clock = dateutil.parser.parse(json.loads(open(args.cgm_clock).read()))
             cgm_clock_reported_at = datetime.fromtimestamp(os.stat(args.cgm_clock).st_mtime)
             recency = int((datetime.now() - end_time + cgm_clock - cgm_clock_reported_at).total_seconds())
         else:
