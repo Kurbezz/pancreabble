@@ -137,7 +137,7 @@ class format_urchin_data(Use):
         delta = NO_DELTA_VALUE if graph[1] == 0 else (graph[0] - graph[1])
 
         if args.cgm_clock:
-            cgm_clock = dateutil.parser.parse(open(args.cgm_clock).read())
+            cgm_clock = dateutil.parser.parse(open(args.cgm_clock).read()[1:-1])
             cgm_clock_reported_at = datetime.fromtimestamp(os.stat(args.cgm_clock).st_mtime)
             recency = int((datetime.now() - end_time + cgm_clock - cgm_clock_reported_at).total_seconds())
         else:
