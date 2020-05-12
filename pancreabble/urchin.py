@@ -139,7 +139,7 @@ class format_urchin_data(Use):
         if args.cgm_clock:
             cgm_clock = dateutil.parser.parse(open(args.cgm_clock).read()[1:-2])
             cgm_clock_reported_at = datetime.fromtimestamp(os.stat(args.cgm_clock).st_mtime)
-            recency = int((datetime.now().replace(tzinfo=None) - end_time.tzinfo.replace(tzinfo=None) + cgm_clock.replace(tzinfo=None) - cgm_clock_reported_at.replace(tzinfo=None)).total_seconds())
+            recency = int((datetime.now().replace(tzinfo=None) - end_time.replace(tzinfo=None) + cgm_clock.replace(tzinfo=None) - cgm_clock_reported_at.replace(tzinfo=None)).total_seconds())
         else:
             # Without knowing offset of device clock, just use mtime of CGM history file
             recency = int(time.time() - os.stat(args.glucose_history).st_mtime)
